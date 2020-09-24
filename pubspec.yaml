@@ -24,6 +24,14 @@ dependencies:
   # Use with the CupertinoIcons class for iOS style icons.
   cupertino_icons: ^0.1.2
   barcode_scan: ^2.0.1
+  http: ^0.12.1
+  cached_network_image: ^2.0.0
+  fluro: ^1.2.1
+  splashscreen:
+  flutter_login: ^1.0.14
+  flutter_svg:
+
+
 
 
 dev_dependencies:
