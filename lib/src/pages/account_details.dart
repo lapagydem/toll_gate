@@ -1,83 +1,67 @@
-import 'package:flutter/cupertino.dart';
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 
-class Dashboard extends StatefulWidget {
-  final response;
-
-  Dashboard({this.response});
-
+class AccountDetails extends StatefulWidget {
   @override
-  _DashboardState createState() => _DashboardState();
+  _AccountDetailsState createState() => _AccountDetailsState();
 }
 
-class _DashboardState extends State<Dashboard> {
-  PageController _myPage = PageController(initialPage: 0);
+class _AccountDetailsState extends State<AccountDetails> {
   final TextStyle whiteText = TextStyle(color: Colors.white);
-  final TextStyle BlackText = TextStyle(color: Colors.black);
-  bool status = false;
-  static String res;
-
-  @override
-  void initState() {
-    // TODO: implement initState
-    res = widget.response;
-    super.initState();
-    print(res);
-    checkResponse();
-  }
-
-  checkResponse() {
-    if (res == ' ') {
-      setState(() {
-        status = false;
-      });
-    } else {
-      setState(() {
-        status = true;
-      });
-    }
-  }
+  final TextStyle BlackText =
+      TextStyle(color: Colors.black, fontWeight: FontWeight.bold);
+  var user;
+  var account_no;
 
   @override
   Widget build(BuildContext context) {
+    final Map arguments = ModalRoute.of(context).settings.arguments as Map;
+    var data = arguments['user'];
+    var decoded = json.decode(data);
+    user = decoded['first_name'] +
+        ' ' +
+        decoded['middle_name'] +
+        ' ' +
+        decoded['surname'];
+    account_no = decoded['account_number'];
+    print(decoded['first_name']);
+
+    if (arguments != null) print(arguments['user']);
+    print(data);
+
     return Scaffold(
-      extendBody: true,
-      backgroundColor: Colors.amber,
+      appBar: AppBar(
+        backgroundColor: Colors.orangeAccent,
+        // title: Text('Account Details'),
+      ),
       body: _buildBody(context),
-        bottomNavigationBar: BottomAppBar(
-          shape: CircularNotchedRectangle(),
-          notchMargin: 5,
-          color: Colors.orangeAccent,
-          child: Container(
-            height: 60,
-            child: Row(
-              mainAxisSize: MainAxisSize.max,
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: <Widget>[
-                IconButton(
-                  iconSize: 30.0,
-                  padding: EdgeInsets.only(left: 28.0),
-                  icon: Icon(Icons.dashboard),
-                  onPressed: () {
-                    setState(() {
-                      _myPage.jumpToPage(0);
-                    });
-                  },
-                ),
-                IconButton(
-                  iconSize: 30.0,
-                  padding: EdgeInsets.only(right: 28.0),
-                  icon: Icon(Icons.account_circle),
-                  onPressed: () {
-                    setState(() {
-                      _myPage.jumpToPage(3);
-                    });
-                  },
-                )
-              ],
-            ),
+      bottomNavigationBar: BottomAppBar(
+        shape: CircularNotchedRectangle(),
+        notchMargin: 5,
+        color: Colors.orangeAccent,
+        child: Container(
+          height: 60,
+          child: Row(
+            mainAxisSize: MainAxisSize.max,
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: <Widget>[
+              IconButton(
+                iconSize: 30.0,
+                padding: EdgeInsets.only(left: 28.0),
+                icon: Icon(Icons.dashboard),
+                onPressed: () {},
+              ),
+              IconButton(
+                iconSize: 30.0,
+                padding: EdgeInsets.only(right: 28.0),
+                icon: Icon(Icons.account_circle),
+                onPressed: () {},
+              )
+            ],
           ),
         ),
+      ),
     );
   }
 
@@ -90,28 +74,6 @@ class _DashboardState extends State<Dashboard> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
           _buildHeader(),
-          status
-              ? AlertDialog(
-                  backgroundColor: Colors.green,
-                  content: Column(
-                    children: <Widget>[
-                      FlatButton(
-                        child: Text(
-                          status ? res : ' ',
-                        ),
-                        onPressed: () {
-                          Navigator.pushNamed(context, '/');
-                        },
-                      ),
-                    ],
-                  ),
-                )
-              : Container(),
-//          Container(
-//            child: Text(
-//                status ? res : ' '
-//            ),
-//          ),
           Card(
             elevation: 5.0,
             color: Colors.white,
@@ -122,21 +84,21 @@ class _DashboardState extends State<Dashboard> {
             child: Row(
               children: <Widget>[
                 Expanded(
-                  flex: 2,
+                  flex: 1,
                   child: _buildTile(
                     color: Colors.blueAccent,
-                    icon: Icons.directions_car,
-                    title: "Total Registered Vehicles",
-                    data: "1200",
+                    icon: Icons.monetization_on,
+                    title: "Account Balance",
+                    data: "50,000/=",
                   ),
                 ),
-                const SizedBox(width: 16.0),
+                const SizedBox(width: 13.0),
                 Expanded(
                   child: _buildTile(
                     color: Colors.green,
-                    icon: Icons.portrait,
-                    title: "Total Accounts",
-                    data: "857",
+                    icon: Icons.directions_car,
+                    title: "Number of Vehicles",
+                    data: "5",
                   ),
                 ),
               ],
@@ -161,7 +123,7 @@ class _DashboardState extends State<Dashboard> {
                         Padding(
                           padding: const EdgeInsets.all(2.0),
                           child: Icon(
-                            Icons.person_add,
+                            Icons.attach_money,
                             size: 50,
                             color: Colors.black,
                           ),
@@ -169,7 +131,7 @@ class _DashboardState extends State<Dashboard> {
                         Padding(
                           padding: const EdgeInsets.all(8.0),
                           child: Text(
-                            "New Account",
+                            "Payments",
                             style: TextStyle(
                               color: Colors.black,
                               fontSize: 13,
@@ -178,10 +140,7 @@ class _DashboardState extends State<Dashboard> {
                         ),
                       ],
                     ),
-                    onPressed: () {
-                      Navigator.of(context).pushReplacementNamed('/new-account',
-                          arguments: {'title': 'Add new Account'});
-                    },
+                    onPressed: () {},
                   ),
                 ),
                 SizedBox(width: 8.0),
@@ -206,7 +165,7 @@ class _DashboardState extends State<Dashboard> {
                         Padding(
                           padding: const EdgeInsets.all(8.0),
                           child: Text(
-                            "Add Vehicle",
+                            "New Vehicle",
                             style: TextStyle(
                               color: Colors.black,
                             ),
@@ -215,8 +174,8 @@ class _DashboardState extends State<Dashboard> {
                       ],
                     ),
                     onPressed: () {
-                      // Navigator.of(context)
-                      //     .pushReplacementNamed('/scanner', arguments: {});
+                      Navigator.of(context)
+                          .pushReplacementNamed('/new-vehicle', arguments: {});
                     },
                   ),
                 ),
@@ -242,7 +201,7 @@ class _DashboardState extends State<Dashboard> {
                         Padding(
                           padding: const EdgeInsets.all(8.0),
                           child: Text(
-                            "Enrollment",
+                            "Settings",
                             style: TextStyle(
                               color: Colors.black,
                             ),
@@ -250,9 +209,7 @@ class _DashboardState extends State<Dashboard> {
                         ),
                       ],
                     ),
-                    onPressed: () {
-                      Navigator.of(context).pushNamed('/account');
-                    },
+                    onPressed: () {},
                   ),
                 ),
               ],
@@ -266,7 +223,7 @@ class _DashboardState extends State<Dashboard> {
 
   Container _buildHeader() {
     return Container(
-      padding: const EdgeInsets.fromLTRB(0, 50.0, 0, 32.0),
+      padding: const EdgeInsets.fromLTRB(0, 5.0, 0, 20.0),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.only(
           bottomLeft: Radius.circular(20.0),
@@ -279,19 +236,23 @@ class _DashboardState extends State<Dashboard> {
         children: <Widget>[
           ListTile(
             title: Text(
-              "Dashboard",
+              "Account Profile",
               style: whiteText.copyWith(
                   fontWeight: FontWeight.bold, fontSize: 20.0),
             ),
             trailing: CircleAvatar(
+              backgroundColor: Colors.white,
+              backgroundImage: AssetImage('assets/image/user2.png'),
+
+              // child: Image.asset('assets/image/nss.png'),
               radius: 25.0,
             ),
           ),
-          const SizedBox(height: 10.0),
+          const SizedBox(height: 5.0),
           Padding(
             padding: const EdgeInsets.only(left: 16.0),
             child: Text(
-              "Emmanuel Mdegipala",
+              user.toUpperCase(),
               style: BlackText.copyWith(
                 fontSize: 18.0,
                 fontWeight: FontWeight.w500,
@@ -302,7 +263,7 @@ class _DashboardState extends State<Dashboard> {
           Padding(
             padding: const EdgeInsets.only(left: 16.0),
             child: Text(
-              "System Developer",
+              "Account no: " + account_no,
               style: BlackText,
             ),
           ),

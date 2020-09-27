@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:flutter_login/flutter_login.dart';
 import 'package:http/http.dart' as http;
+import 'package:toll_gate/res/users.dart';
 
 import 'dashboard.dart';
 
@@ -29,17 +30,17 @@ class LoginScreen extends StatelessWidget {
     }
   }
 // for testing login localy
-  // Future<String> _loginUser(LoginData data) {
-  //   return Future.delayed(loginTime).then((_) {
-  //     if (!mockUsers.containsKey(data.name)) {
-  //       return 'Username not exists';
-  //     }
-  //     if (mockUsers[data.name] != data.password) {
-  //       return 'Password does not match';
-  //     }
-  //     return null;
-  //   });
-  // }
+//   Future<String> _loginUser(LoginData data) {
+//     return Future.delayed(loginTime).then((_) {
+//       if (!mockUsers.containsKey(data.name)) {
+//         return 'Username not exists';
+//       }
+//       if (mockUsers[data.name] != data.password) {
+//         return 'Password does not match';
+//       }
+//       return null;
+//     });
+//   }
 
   @override
   Widget build(BuildContext context) {

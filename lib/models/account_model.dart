@@ -1,33 +1,49 @@
 // To parse this JSON data, do
 //
-//     final userModel = userModelFromJson(jsonString);
+//     final accountModel = accountModelFromJson(jsonString);
 
 import 'dart:convert';
 
-UserModel userModelFromJson(String str) => UserModel.fromJson(json.decode(str));
+AccountModel accountModelFromJson(String str) => AccountModel.fromJson(json.decode(str));
 
-String userModelToJson(UserModel data) => json.encode(data.toJson());
+String accountModelToJson(AccountModel data) => json.encode(data.toJson());
 
-class UserModel {
-  UserModel({
-    this.name,
-    this.job,
+class AccountModel {
+  AccountModel({
+    this.nida,
+    this.firstName,
+    this.middleName,
+    this.surname,
+    this.email,
+    this.phone,
     this.id,
   });
 
-  String name;
-  String job;
+  String nida;
+  String firstName;
+  String middleName;
+  String surname;
+  String email;
+  String phone;
   int id;
 
-  factory UserModel.fromJson(Map<String, dynamic> json) => UserModel(
-    name: json["name"],
-    job: json["job"],
+  factory AccountModel.fromJson(Map<String, dynamic> json) => AccountModel(
+    nida: json["nida"],
+    firstName: json["first_name"],
+    middleName: json["middle_name"],
+    surname: json["surname"],
+    email: json["email"],
+    phone: json["phone"],
     id: json["id"],
   );
 
   Map<String, dynamic> toJson() => {
-    "name": name,
-    "job": job,
+    "nida": nida,
+    "first_name": firstName,
+    "middle_name": middleName,
+    "surname": surname,
+    "email": email,
+    "phone": phone,
     "id": id,
   };
 }

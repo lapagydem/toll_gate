@@ -32,9 +32,21 @@ class MyApp extends StatelessWidget {
           child: NewAccount(),
         ),
         '/new-vehicle': (context) => SafeArea(
-              top: true,
-              child: VehicleRegistration(),
-            ),
+          top: true,
+          child: VehicleRegistration(),
+        ),
+        '/enrollment': (context) => SafeArea(
+          top: true,
+          child: VehicleEnrollment(),
+        ),
+        '/account':(context)=> SafeArea(
+          top: true,
+          child: SearchAccount(),
+        ),
+        '/account-details':(context)=> SafeArea(
+          top: true,
+          child: AccountDetails(),
+        )
       },
     );
   }

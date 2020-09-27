@@ -1,68 +1,54 @@
-import 'dart:convert';
-
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import 'package:toll_gate/res/snackbar.dart';
 
-import '../../models/vehicle_model.dart';
+import '../../models/account_model.dart';
+import 'dashboard.dart';
 
-class RegisterVehicle extends StatefulWidget {
+class RegisterAccount extends StatefulWidget {
   @override
-  RegisterVehicleState createState() {
-    return RegisterVehicleState();
+  RegisterAccountState createState() {
+    return RegisterAccountState();
   }
 }
 
-Future<VehicleModel> createVehicle(String plate_no, String account_no,
-    String rfid_tag_no, String body_type_id) async {
-  final String apiUrl = 'http://10.10.13.76/Ekanisa/web/vehicles';
+Future<AccountModel> createAccount(
+  String nida,
+  String first_name,
+  String middle_name,
+  String surname,
+  String phone,
+  String email,
+) async {
+  final String apiUrl = 'http://10.10.13.76/smart-pass/web/accounts';
 //  final String apiUrl = 'http://192.168.43.86/Ekanisa/web/vehicles';
   final response = await http.post(apiUrl, body: {
-    "body_type_id": body_type_id,
-    "account_no": account_no,
-    "rfid_tag_no": rfid_tag_no,
-    "plate_no": plate_no
+    "nida": nida,
+    "first_name": first_name,
+    "middle_name": middle_name,
+    "surname": surname,
+    "email": email,
+    "phone": phone
   });
-
   if (response.statusCode == 201) {
     final String responseString = response.body;
-    print(responseString);
-    return vehicleModelFromJson(responseString);
+    return accountModelFromJson(responseString);
   } else {
     return null;
   }
 }
-class RegisterVehicleState extends State<RegisterVehicle> {
-  VehicleModel _vehicle;
-  String _mySelection;
-  final String url = "http://10.10.13.76/smart-pass/web/body";
-  List data = List(); //edited line
 
-  Future<String> getBodyTypeList() async {
-    var res = await http
-        .get(Uri.encodeFull(url), headers: {"Accept": "application/json"});
-    var resBody = json.decode(res.body);
-
-    setState(() {
-      data = resBody;
-    });
-
-    print(resBody);
-
-    return "Sucess";
-  }
-
-  @override
-  void initState() {
-    super.initState();
-    this.getBodyTypeList();
-  }
-
+class RegisterAccountState extends State<RegisterAccount> {
+  AccountModel _account;
   final _formKey = GlobalKey<FormState>();
-  final TextEditingController tag_numberController = TextEditingController();
-  final TextEditingController body_typeController = TextEditingController();
-  final TextEditingController account_numberController = TextEditingController();
-  final TextEditingController plate_numberController = TextEditingController();
+
+  final TextEditingController nidaController = TextEditingController();
+  final TextEditingController first_nameController = TextEditingController();
+  final TextEditingController middle_nameController = TextEditingController();
+  final TextEditingController surnameController = TextEditingController();
+  final TextEditingController emailController = TextEditingController();
+  final TextEditingController phoneController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -71,7 +57,6 @@ class RegisterVehicleState extends State<RegisterVehicle> {
     // TODO: implement build
     return Scaffold(
       backgroundColor: Colors.yellow[100],
-
       body: Container(
         margin: const EdgeInsets.fromLTRB(16.0, 20.0, 18.0, 16.0),
         decoration: BoxDecoration(
@@ -84,77 +69,89 @@ class RegisterVehicleState extends State<RegisterVehicle> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
                 const SizedBox(height: 20.0),
-                DropdownButtonFormField(
-                  decoration: InputDecoration(
-                      hintText: "Body Type",
-                      prefixIcon: Icon(Icons.directions_car),
-                      border: const OutlineInputBorder()),
-                  validator: (value) {
-                    if (value.isEmpty) {
-                      return "Body Type Cant Be Empty";
-                    }
-                    return null;
-                  },
-                  items: data.map((item) {
-                    return new DropdownMenuItem(
-                      child: new Text(item['name']),
-                      value: item['id'].toString(),
-                    );
-                  }).toList(),
-                  onChanged: (newVal) {
-                    setState(() {
-                      _mySelection = newVal;
-                    });
-                  },
-                  value: _mySelection,
-                ),
-                const SizedBox(height: 20.0),
                 TextFormField(
-//                    controller: tag_numberController,
-                    initialValue: routes['barcode'],
+                    controller: first_nameController,
                     decoration: InputDecoration(
-                      hintText: "Tag Number",
-                      prefixIcon: Icon(Icons.apps),
+                      hintText: "First Name",
+                      prefixIcon: Icon(Icons.person_outline),
                       border: const OutlineInputBorder(),
                     ),
                     validator: (value) {
                       if (value.isEmpty) {
-                        return "Tag Number Can't be Empty";
+                        return 'please enter Your First Name';
                       }
                       return null;
                     }),
                 const SizedBox(height: 20.0),
                 TextFormField(
-                    controller: plate_numberController,
+                    controller: middle_nameController,
                     decoration: InputDecoration(
-                      hintText: "Plate Number",
-                      prefixIcon: Icon(Icons.directions_car),
+                      hintText: "Middle Name",
+                      prefixIcon: Icon(Icons.person),
                       border: const OutlineInputBorder(),
                     ),
                     validator: (value) {
                       if (value.isEmpty) {
-                        return 'please enter something';
+                        return "Please enter your middle name";
                       }
                       return null;
                     }),
                 const SizedBox(height: 20.0),
                 TextFormField(
-                    controller: account_numberController,
+                    controller: surnameController,
                     decoration: InputDecoration(
-                      hintText: "Account Number",
+                      hintText: "Last Name",
+                      prefixIcon: Icon(Icons.person),
+                      border: const OutlineInputBorder(),
+                    ),
+                    validator: (value) {
+                      if (value.isEmpty) {
+                        return 'please enter Your Last name';
+                      }
+                      return null;
+                    }),
+                const SizedBox(height: 20.0),
+                TextFormField(
+                    controller: phoneController,
+                    decoration: InputDecoration(
+                      hintText: "Phone Number",
                       prefixIcon: Icon(Icons.account_balance_wallet),
                       border: const OutlineInputBorder(),
                     ),
                     validator: (value) {
                       if (value.isEmpty) {
-                        return 'please enter something';
+                        return 'please enter your phone number';
                       }
                       return null;
                     }),
-                _vehicle == null
-                    ? Container()
-                    : Text(
-                        " Owner is created succesfullly with vehicle "),
+                const SizedBox(height: 20.0),
+                TextFormField(
+                    controller: emailController,
+                    decoration: InputDecoration(
+                      hintText: "Email",
+                      prefixIcon: Icon(Icons.mail),
+                      border: const OutlineInputBorder(),
+                    ),
+                    validator: (value) {
+                      if (value.isEmpty) {
+                        return 'please enter your Email';
+                      }
+                      return null;
+                    }),
+                const SizedBox(height: 20.0),
+                TextFormField(
+                    controller: nidaController,
+                    decoration: InputDecoration(
+                      hintText: "NIDA number",
+                      prefixIcon: Icon(Icons.nfc),
+                      border: const OutlineInputBorder(),
+                    ),
+                    validator: (value) {
+                      if (value.isEmpty) {
+                        return 'please enter your NIDA number';
+                      }
+                      return null;
+                    }),
                 const SizedBox(height: 20.0),
                 const SizedBox(height: 10.0),
                 SizedBox(
@@ -164,23 +161,31 @@ class RegisterVehicleState extends State<RegisterVehicle> {
                     textColor: Colors.white,
                     onPressed: () async {
                       if (_formKey.currentState.validate()) {
-                        final String account_no =
-                            account_numberController.text;
-                        final String body_type_id = body_typeController.text;
-                        final String plate_no = plate_numberController.text;
-                        final String rfid_tag_no = routes['barcode'];
-                        final VehicleModel vehicle = await createVehicle(
-                            body_type_id,
-                            account_no,
-                            rfid_tag_no,
-                            plate_no);
+                        final String nida = nidaController.text;
+                        final String first_name = first_nameController.text;
+                        final String middle_name = middle_nameController.text;
+                        final String surname = surnameController.text;
+                        final String phone = phoneController.text;
+                        final String email = emailController.text;
+                        final AccountModel account = await createAccount(nida,
+                            first_name, middle_name, surname, phone, email);
 
                         setState(() {
-                          _vehicle = vehicle;
+                          _account = account;
                         });
-                        Scaffold.of(context).showSnackBar(SnackBar(
-                          content: Text('Registering'),
-                        ));
+
+                        _account == null
+                            ? Scaffold.of(context).showSnackBar(BuildSnackbar()
+                                .buildSnackBar(
+                                    'Failed to Register! Please Check your Inputs'))
+                            : Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => Dashboard(
+                                        response:
+                                            'Account of ${_account.firstName} was Created Successfully')));
+                        //                    : Text(" Owner ${_account.firstName},${_account.middleName} is created succesfullly "),
+
                       }
                     },
                     child: Text('Register'),
@@ -192,23 +197,6 @@ class RegisterVehicleState extends State<RegisterVehicle> {
           ),
         ),
       ),
-
-//      body: new Center(
-//      child: new DropdownButton(
-//        items: data.map((item) {
-//          return new DropdownMenuItem(
-//            child: new Text(item['item_name']),
-//            value: item['id'].toString(),
-//          );
-//        }).toList(),
-//        onChanged: (newVal) {
-//          setState(() {
-//            _mySelection = newVal;
-//          });
-//        },
-//        value: _mySelection,
-//      ),
-//    ),
     );
   }
 }

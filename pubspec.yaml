@@ -30,6 +30,9 @@ dependencies:
   splashscreen:
   flutter_login: ^1.0.14
   flutter_svg:
+  flutter_typeahead:
+  autocomplete_textfield: ^1.6.4
+  flutter_staggered_animations: "^0.1.2"
 
 
 

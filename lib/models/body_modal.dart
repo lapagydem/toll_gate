@@ -1,49 +1,53 @@
 // To parse this JSON data, do
 //
-//     final accountModel = accountModelFromJson(jsonString);
+//     final bodyTypeModel = bodyTypeModelFromJson(jsonString);
 
 import 'dart:convert';
 
-AccountModel accountModelFromJson(String str) => AccountModel.fromJson(json.decode(str));
+BodyTypeModel bodyTypeModelFromJson(String str) => BodyTypeModel.fromJson(json.decode(str));
 
-String accountModelToJson(AccountModel data) => json.encode(data.toJson());
+String bodyTypeModelToJson(BodyTypeModel data) => json.encode(data.toJson());
 
-class AccountModel {
-  AccountModel({
-    this.nida,
-    this.firstName,
-    this.middleName,
-    this.surname,
-    this.email,
-    this.phone,
+class BodyTypeModel {
+  BodyTypeModel({
     this.id,
+    this.name,
+    this.description,
+    this.isActive,
+    this.createdBy,
+    this.createdAt,
+    this.updatedBy,
+    this.updatedAt,
   });
 
-  String nida;
-  String firstName;
-  String middleName;
-  String surname;
-  String email;
-  String phone;
   int id;
+  String name;
+  String description;
+  int isActive;
+  dynamic createdBy;
+  dynamic createdAt;
+  dynamic updatedBy;
+  dynamic updatedAt;
 
-  factory AccountModel.fromJson(Map<String, dynamic> json) => AccountModel(
-    nida: json["nida"],
-    firstName: json["first_name"],
-    middleName: json["middle_name"],
-    surname: json["surname"],
-    email: json["email"],
-    phone: json["phone"],
+  factory BodyTypeModel.fromJson(Map<String, dynamic> json) => BodyTypeModel(
     id: json["id"],
+    name: json["name"],
+    description: json["description"],
+    isActive: json["is_active"],
+    createdBy: json["created_by"],
+    createdAt: json["created_at"],
+    updatedBy: json["updated_by"],
+    updatedAt: json["updated_at"],
   );
 
   Map<String, dynamic> toJson() => {
-    "nida": nida,
-    "first_name": firstName,
-    "middle_name": middleName,
-    "surname": surname,
-    "email": email,
-    "phone": phone,
     "id": id,
+    "name": name,
+    "description": description,
+    "is_active": isActive,
+    "created_by": createdBy,
+    "created_at": createdAt,
+    "updated_by": updatedBy,
+    "updated_at": updatedAt,
   };
 }

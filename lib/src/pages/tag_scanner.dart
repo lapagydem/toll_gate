@@ -2,12 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:barcode_scan/barcode_scan.dart';
 
 
-class MyHomePage extends StatefulWidget {
+class TagScanner extends StatefulWidget {
   @override
-  _MyHomePageState createState() => _MyHomePageState();
+  _TagScannerState createState() => _TagScannerState();
 }
 
-class _MyHomePageState extends State<MyHomePage> {
+class _TagScannerState extends State<TagScanner> {
   String barcode = "";
   final _formKey = GlobalKey<FormState>();
 
@@ -85,11 +85,7 @@ class _MyHomePageState extends State<MyHomePage> {
 
     return Scaffold(
       extendBody: true,
-      appBar: AppBar(
-        backgroundColor: Colors.orangeAccent,
-        title: Text('Smart Toll Gate'),
-        centerTitle: true,
-      ),
+
       body: Container(
         decoration: BoxDecoration(
             image: DecorationImage(
@@ -138,8 +134,8 @@ class _MyHomePageState extends State<MyHomePage> {
                 padding: EdgeInsets.only(left: 28.0),
                 icon: Icon(Icons.dashboard),
                 onPressed: () {
-                  setState(() {
-                    _myPage.jumpToPage(0);
+                  Navigator.of(context).pushReplacementNamed('/',arguments:{
+
                   });
                 },
               ),

@@ -10,44 +10,76 @@ String vehicleModelToJson(VehicleModel data) => json.encode(data.toJson());
 
 class VehicleModel {
   VehicleModel({
-    this.firstName,
-    this.lastName,
-    this.email,
-    this.phoneNumber,
-    this.nationalId,
-    this.tagNumber,
-    this.plateNumber,
+    this.status,
+    this.vehicle,
+    this.details,
+  });
+
+  int status;
+  Vehicle vehicle;
+  Details details;
+
+  factory VehicleModel.fromJson(Map<String, dynamic> json) => VehicleModel(
+    status: json["status"],
+    vehicle: Vehicle.fromJson(json["vehicle"]),
+    details: Details.fromJson(json["details"]),
+  );
+
+  Map<String, dynamic> toJson() => {
+    "status": status,
+    "vehicle": vehicle.toJson(),
+    "details": details.toJson(),
+  };
+}
+
+class Details {
+  Details({
+    this.accountId,
+    this.vehicleId,
     this.id,
   });
 
-  String firstName;
-  String lastName;
-  String email;
-  String phoneNumber;
-  String nationalId;
-  String tagNumber;
-  String plateNumber;
+  String accountId;
+  int vehicleId;
   int id;
 
-  factory VehicleModel.fromJson(Map<String, dynamic> json) => VehicleModel(
-    firstName: json["first_name"],
-    lastName: json["last_name"],
-    email: json["email"],
-    phoneNumber: json["phone_number"],
-    nationalId: json["national_id"],
-    tagNumber: json["tag_number"],
-    plateNumber: json["plate_number"],
+  factory Details.fromJson(Map<String, dynamic> json) => Details(
+    accountId: json["account_id"],
+    vehicleId: json["vehicle_id"],
     id: json["id"],
   );
 
   Map<String, dynamic> toJson() => {
-    "first_name": firstName,
-    "last_name": lastName,
-    "email": email,
-    "phone_number": phoneNumber,
-    "national_id": nationalId,
-    "tag_number": tagNumber,
-    "plate_number": plateNumber,
+    "account_id": accountId,
+    "vehicle_id": vehicleId,
+    "id": id,
+  };
+}
+
+class Vehicle {
+  Vehicle({
+    this.plateNo,
+    this.rfidTagNo,
+    this.bodyTypeId,
+    this.id,
+  });
+
+  String plateNo;
+  String rfidTagNo;
+  String bodyTypeId;
+  int id;
+
+  factory Vehicle.fromJson(Map<String, dynamic> json) => Vehicle(
+    plateNo: json["plate_no"],
+    rfidTagNo: json["rfid_tag_no"],
+    bodyTypeId: json["body_type_id"],
+    id: json["id"],
+  );
+
+  Map<String, dynamic> toJson() => {
+    "plate_no": plateNo,
+    "rfid_tag_no": rfidTagNo,
+    "body_type_id": bodyTypeId,
     "id": id,
   };
 }
