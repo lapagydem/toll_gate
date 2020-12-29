@@ -17,7 +17,7 @@ class MyMaterialApp extends StatelessWidget {
 }
 
 class MyHomePage2 extends StatelessWidget {
-  final String url = "http://10.10.47.43/to_dev/tgmis_rest_api/web/accounts";
+  final String url = "https://bridge-core.nssf.or.tz/accounts";
   List data = List();
 
   Future<String> getAccounts() async {

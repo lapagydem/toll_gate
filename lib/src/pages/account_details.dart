@@ -36,32 +36,32 @@ class _AccountDetailsState extends State<AccountDetails> {
         // title: Text('Account Details'),
       ),
       body: _buildBody(context),
-      bottomNavigationBar: BottomAppBar(
-        shape: CircularNotchedRectangle(),
-        notchMargin: 5,
-        color: Colors.orangeAccent,
-        child: Container(
-          height: 60,
-          child: Row(
-            mainAxisSize: MainAxisSize.max,
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: <Widget>[
-              IconButton(
-                iconSize: 30.0,
-                padding: EdgeInsets.only(left: 28.0),
-                icon: Icon(Icons.dashboard),
-                onPressed: () {},
-              ),
-              IconButton(
-                iconSize: 30.0,
-                padding: EdgeInsets.only(right: 28.0),
-                icon: Icon(Icons.account_circle),
-                onPressed: () {},
-              )
-            ],
-          ),
-        ),
-      ),
+      // bottomNavigationBar: BottomAppBar(
+      //   shape: CircularNotchedRectangle(),
+      //   notchMargin: 5,
+      //   color: Colors.orangeAccent,
+      //   child: Container(
+      //     height: 60,
+      //     child: Row(
+      //       mainAxisSize: MainAxisSize.max,
+      //       mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      //       children: <Widget>[
+      //         IconButton(
+      //           iconSize: 30.0,
+      //           padding: EdgeInsets.only(left: 28.0),
+      //           icon: Icon(Icons.dashboard),
+      //           onPressed: () {},
+      //         ),
+      //         IconButton(
+      //           iconSize: 30.0,
+      //           padding: EdgeInsets.only(right: 28.0),
+      //           icon: Icon(Icons.account_circle),
+      //           onPressed: () {},
+      //         )
+      //       ],
+      //     ),
+      //   ),
+      // ),
     );
   }
 
@@ -110,106 +110,114 @@ class _AccountDetailsState extends State<AccountDetails> {
             child: Row(
               mainAxisSize: MainAxisSize.min,
               children: <Widget>[
-                ButtonTheme(
-                  minWidth: 120.0,
-                  height: 110.0,
-                  child: RaisedButton(
-                    color: Colors.white,
-                    elevation: 5.0,
-                    padding: EdgeInsets.all(4.0),
-                    child: Column(
-                      mainAxisSize: MainAxisSize.min,
-                      children: <Widget>[
-                        Padding(
-                          padding: const EdgeInsets.all(2.0),
-                          child: Icon(
-                            Icons.attach_money,
-                            size: 50,
-                            color: Colors.black,
-                          ),
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: Text(
-                            "Payments",
-                            style: TextStyle(
+                Flexible(
+                  child: ButtonTheme(
+                    minWidth: 100.0,
+                    height: 110.0,
+                    child: RaisedButton(
+                      color: Colors.amber[50],
+                      elevation: 5.0,
+                      padding: EdgeInsets.all(4.0),
+                      child: Column(
+                        mainAxisSize: MainAxisSize.min,
+                        children: <Widget>[
+                          Padding(
+                            padding: const EdgeInsets.all(2.0),
+                            child: Icon(
+                              Icons.attach_money,
+                              size: 50,
                               color: Colors.black,
-                              fontSize: 13,
                             ),
                           ),
-                        ),
-                      ],
+                          Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: Text(
+                              "Payments",
+                              style: TextStyle(
+                                color: Colors.black,
+                                fontSize: 13,
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                      onPressed: () {},
                     ),
-                    onPressed: () {},
                   ),
                 ),
                 SizedBox(width: 8.0),
-                ButtonTheme(
-                  minWidth: 120.0,
-                  height: 110.0,
-                  child: RaisedButton(
-                    color: Colors.white,
-                    elevation: 5.0,
-                    padding: EdgeInsets.all(4.0),
-                    child: Column(
-                      mainAxisSize: MainAxisSize.min,
-                      children: <Widget>[
-                        Padding(
-                          padding: const EdgeInsets.all(2.0),
-                          child: Icon(
-                            Icons.directions_car,
-                            size: 50,
-                            color: Colors.black,
-                          ),
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: Text(
-                            "New Vehicle",
-                            style: TextStyle(
+                Flexible(
+                  child: ButtonTheme(
+                    minWidth: 100.0,
+                    height: 110.0,
+                    child: RaisedButton(
+                      color: Colors.amber[50],
+                      elevation: 5.0,
+                      padding: EdgeInsets.all(4.0),
+                      child: Column(
+                        mainAxisSize: MainAxisSize.min,
+                        children: <Widget>[
+                          Padding(
+                            padding: const EdgeInsets.all(2.0),
+                            child: Icon(
+                              Icons.directions_car,
+                              size: 50,
                               color: Colors.black,
                             ),
                           ),
-                        ),
-                      ],
+                          Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: Text(
+                              "New Vehicle",
+                              style: TextStyle(
+                                color: Colors.black,
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                      onPressed: () {
+                        Navigator.of(context)
+                            .pushReplacementNamed('/scanner', arguments: {
+                              'account': account_no
+                        });
+                      },
                     ),
-                    onPressed: () {
-                      Navigator.of(context)
-                          .pushReplacementNamed('/new-vehicle', arguments: {});
-                    },
                   ),
                 ),
                 SizedBox(width: 8.0),
-                ButtonTheme(
-                  minWidth: 120.0,
-                  height: 110.0,
-                  child: RaisedButton(
-                    color: Colors.white,
-                    elevation: 5.0,
-                    padding: EdgeInsets.all(4.0),
-                    child: Column(
-                      mainAxisSize: MainAxisSize.min,
-                      children: <Widget>[
-                        Padding(
-                          padding: const EdgeInsets.all(2.0),
-                          child: Icon(
-                            Icons.settings,
-                            size: 50,
-                            color: Colors.black,
-                          ),
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: Text(
-                            "Settings",
-                            style: TextStyle(
+                Flexible(
+                  child: ButtonTheme(
+                    minWidth: 100.0,
+                    height: 110.0,
+                    child: RaisedButton(
+                      color: Colors.amber[50],
+                      elevation: 5.0,
+                      padding: EdgeInsets.all(4.0),
+                      child: Column(
+                        mainAxisSize: MainAxisSize.min,
+                        children: <Widget>[
+                          Padding(
+                            padding: const EdgeInsets.all(2.0),
+                            child: Icon(
+                              Icons.settings,
+                              size: 50,
                               color: Colors.black,
                             ),
                           ),
-                        ),
-                      ],
+                          Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: Text(
+                              "Settings",
+                              style: TextStyle(
+                                color: Colors.black,
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                      onPressed: () {},
                     ),
-                    onPressed: () {},
                   ),
                 ),
               ],

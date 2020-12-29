@@ -21,7 +21,7 @@ Future<VehicleModel> createVehicle(
   String rfid_tag_no,
   String body_type_id,
 ) async {
-  final String apiUrl = 'http://10.10.13.76/smart-pass/web/vehicle/create';
+  final String apiUrl = 'https://bridge-core.nssf.or.tz/vehicle/create';
 //  final String apiUrl = 'http://192.168.43.86/Ekanisa/web/vehicles';
   final response = await http.post(apiUrl, body: {
     "body_type_id": body_type_id,
@@ -42,7 +42,7 @@ Future<VehicleModel> createVehicle(
 class RegisterVehicleState extends State<RegisterVehicle> {
   VehicleModel _vehicle;
   String _mySelection;
-  final String url = "http://10.10.47.43/to_dev/tgmis_rest_api/web/body-type/index";
+  final String url = "https://bridge-core.nssf.or.tz/body-type/index";
   List data = List();
 
   Future<String> getBodyTypeList() async {
@@ -76,7 +76,7 @@ class RegisterVehicleState extends State<RegisterVehicle> {
   @override
   Widget build(BuildContext context) {
     final routes =
-        ModalRoute.of(context).settings.arguments as Map<String, String>;
+        ModalRoute.of(context).settings.arguments as Map<String, dynamic>;
     // TODO: implement build
     return Scaffold(
       backgroundColor: Colors.yellow[100],
@@ -122,7 +122,9 @@ class RegisterVehicleState extends State<RegisterVehicle> {
                     }),
                 const SizedBox(height: 20.0),
                 TextFormField(
-                    controller: account_numberController,
+                    // controller: account_numberController,
+                    initialValue: routes['account'],
+
                     decoration: InputDecoration(
                       hintText: "Account Number",
                       prefixIcon: Icon(Icons.account_balance_wallet),
@@ -171,7 +173,8 @@ class RegisterVehicleState extends State<RegisterVehicle> {
                     onPressed: () async {
                       if (_formKey.currentState.validate()) {
                         print(_mySelection);
-                        final String account_no = account_numberController.text;
+                        final String account_no = routes['account'];
+                        // final String account_no = account_numberController.text;
                         final String body_type_id = _mySelection;
                         final String plate_no = plate_numberController.text;
                         final String rfid_tag_no = routes['barcode'];

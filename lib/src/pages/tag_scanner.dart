@@ -9,6 +9,7 @@ class TagScanner extends StatefulWidget {
 
 class _TagScannerState extends State<TagScanner> {
   String barcode = "";
+  var account;
   final _formKey = GlobalKey<FormState>();
 
   Future scanCode() async {
@@ -30,6 +31,8 @@ class _TagScannerState extends State<TagScanner> {
 
   @override
   Widget build(BuildContext context) {
+    final routes =
+    ModalRoute.of(context).settings.arguments as Map<String, dynamic>;
     void _showDialog() {
       showDialog(
         context: context,
@@ -74,7 +77,8 @@ class _TagScannerState extends State<TagScanner> {
                   onPressed: () {
                     Navigator.of(context).pushReplacementNamed('/new-vehicle',arguments:{
                       'title':'Add new Vehicle',
-                      'barcode': barcode
+                      'barcode': barcode,
+                      'account': routes['account']
                     });
                   })
             ],

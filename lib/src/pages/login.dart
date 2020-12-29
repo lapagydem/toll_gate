@@ -13,16 +13,17 @@ class LoginScreen extends StatelessWidget {
 
   Future<String> _loginUser(LoginData data) async {
     final String apiUrl =
-        'http://10.10.47.43/to_dev/tgmis_rest_api/web/auth-user/login';
+        'https://bridge-core.nssf.or.tz/auth-user/login';
+        // 'http://10.10.47.43/to_dev/tgmis_rest_api/web/auth-user/login';
     final response = await http
         .post(apiUrl, body: {"username": data.name, "password": data.password});
     print(response.statusCode);
-    var newsData = await response.body;
+    var resData = await response.body;
     var decoded = json.decode(response.body);
     print(decoded['message']);
     if (decoded['message'] == 'Authenticated') {
       // final String responseString = response.body;
-      print(newsData);
+      print(resData);
       // print(response.body);
       return null;
     } else {

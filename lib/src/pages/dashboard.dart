@@ -42,7 +42,7 @@ class _DashboardState extends State<Dashboard> {
   Widget build(BuildContext context) {
     return Scaffold(
       extendBody: true,
-      backgroundColor: Colors.amber,
+      backgroundColor: Colors.white,
       body: _buildBody(context),
         bottomNavigationBar: BottomAppBar(
           shape: CircularNotchedRectangle(),
@@ -148,84 +148,91 @@ class _DashboardState extends State<Dashboard> {
             child: Row(
               mainAxisSize: MainAxisSize.min,
               children: <Widget>[
-                ButtonTheme(
-                  minWidth: 120.0,
-                  height: 110.0,
-                  child: RaisedButton(
-                    color: Colors.white,
-                    elevation: 5.0,
-                    padding: EdgeInsets.all(4.0),
-                    child: Column(
-                      mainAxisSize: MainAxisSize.min,
-                      children: <Widget>[
-                        Padding(
-                          padding: const EdgeInsets.all(2.0),
-                          child: Icon(
-                            Icons.person_add,
-                            size: 50,
-                            color: Colors.black,
-                          ),
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: Text(
-                            "New Account",
-                            style: TextStyle(
-                              color: Colors.black,
-                              fontSize: 13,
+                SizedBox(width: 20.0),
+                Flexible(
+                  child: ButtonTheme(
+                    minWidth: 100.0,
+                    height: 110.0,
+                    child: RaisedButton(
+                      color: Colors.amber[50],
+                      elevation: 5.0,
+                      padding: EdgeInsets.all(4.0),
+                      child: Column(
+                        mainAxisSize: MainAxisSize.min,
+                        children: <Widget>[
+                          Flexible(
+                            child: Padding(
+                              padding: const EdgeInsets.all(2.0),
+                              child: Icon(
+                                Icons.person_add,
+                                size: 40,
+                                color: Colors.black,
+                              ),
                             ),
                           ),
-                        ),
-                      ],
+                          Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: Text(
+                              "Account",
+                              style: TextStyle(
+                                color: Colors.black,
+                                fontSize: 12,
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                      onPressed: () {
+                        Navigator.of(context).pushReplacementNamed('/new-account',
+                            arguments: {'title': 'Add new Account'});
+                      },
                     ),
-                    onPressed: () {
-                      Navigator.of(context).pushReplacementNamed('/new-account',
-                          arguments: {'title': 'Add new Account'});
-                    },
                   ),
                 ),
-                SizedBox(width: 8.0),
-                ButtonTheme(
-                  minWidth: 120.0,
-                  height: 110.0,
-                  child: RaisedButton(
-                    color: Colors.white,
-                    elevation: 5.0,
-                    padding: EdgeInsets.all(4.0),
-                    child: Column(
-                      mainAxisSize: MainAxisSize.min,
-                      children: <Widget>[
-                        Padding(
-                          padding: const EdgeInsets.all(2.0),
-                          child: Icon(
-                            Icons.directions_car,
-                            size: 50,
-                            color: Colors.black,
-                          ),
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: Text(
-                            "Add Vehicle",
-                            style: TextStyle(
+                SizedBox(width: 5.0),
+                Flexible(
+                  child: ButtonTheme(
+                    minWidth: 100.0,
+                    height: 110.0,
+                    child: RaisedButton(
+                      color: Colors.amber[50],
+                      elevation: 5.0,
+                      padding: EdgeInsets.all(4.0),
+                      child: Column(
+                        mainAxisSize: MainAxisSize.min,
+                        children: <Widget>[
+                          Padding(
+                            padding: const EdgeInsets.all(2.0),
+                            child: Icon(
+                              Icons.directions_car,
+                              size: 40,
                               color: Colors.black,
                             ),
                           ),
-                        ),
-                      ],
+                          Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: Text(
+                              "Vehicle",
+                              style: TextStyle(
+                                color: Colors.black,
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                      onPressed: () {
+                        // Navigator.of(context)
+                        //     .pushReplacementNamed('/scanner', arguments: {});
+                      },
                     ),
-                    onPressed: () {
-                      // Navigator.of(context)
-                      //     .pushReplacementNamed('/scanner', arguments: {});
-                    },
                   ),
                 ),
-                SizedBox(width: 8.0),
+                SizedBox(width: 5.0),
                 ButtonTheme(
-                  minWidth: 120.0,
+                  minWidth: 100.0,
                   height: 110.0,
                   child: RaisedButton(
-                    color: Colors.white,
+                    color: Colors.amber[50],
                     elevation: 5.0,
                     padding: EdgeInsets.all(4.0),
                     child: Column(
@@ -234,7 +241,7 @@ class _DashboardState extends State<Dashboard> {
                         Padding(
                           padding: const EdgeInsets.all(2.0),
                           child: Icon(
-                            Icons.settings,
+                            Icons.fiber_new,
                             size: 50,
                             color: Colors.black,
                           ),
@@ -258,7 +265,7 @@ class _DashboardState extends State<Dashboard> {
               ],
             ),
           ),
-          const SizedBox(height: 20.0),
+          // const SizedBox(height: 20.0),
         ],
       ),
     );

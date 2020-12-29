@@ -19,7 +19,7 @@ class _VehicleRegistrationState extends State<VehicleRegistration> {
     ModalRoute
         .of(context)
         .settings
-        .arguments as Map<String, String>;
+        .arguments as Map<String, dynamic>;
 
     return Scaffold(
       appBar: AppBar(

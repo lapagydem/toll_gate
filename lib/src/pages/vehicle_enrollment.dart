@@ -8,7 +8,7 @@ class VehicleEnrollment extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       color: Colors.orangeAccent,
-      home: MyHomePage2(),
+      // home: MyHomePage2(),
     );
   }
 }

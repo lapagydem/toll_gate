@@ -1,10 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:splashscreen/splashscreen.dart';
+import 'package:toll_gate/src/pages/account_details.dart';
 import 'package:toll_gate/src/pages/dashboard.dart';
 import 'package:toll_gate/src/pages/login.dart';
 import 'package:toll_gate/src/pages/new_account.dart';
+import 'package:toll_gate/src/pages/search_account.dart';
 import 'package:toll_gate/src/pages/tag_scanner.dart';
 import 'package:toll_gate/src/pages/new_vehicle.dart';
+import 'package:toll_gate/src/pages/vehicle_enrollment.dart';
 
 void main() => runApp(MyApp());
 
@@ -55,7 +58,7 @@ class Splash2 extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SplashScreen(
-      seconds: 6,
+      seconds: 3,
       navigateAfterSeconds: new LoginScreen(),
       // title: new Text('TGMIS',textScaleFactor: 2,),
       image: new Image.asset('assets/image/nssf.png'),

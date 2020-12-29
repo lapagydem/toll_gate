@@ -22,10 +22,11 @@ class _SearchAccountState extends State<SearchAccount2> {
   static List<User> users = new List<User>();
   bool loading = true;
 
+  //get Accounts list with typahead
   void getUsers() async {
     try {
-      final response = await http
-          .get("http://10.10.47.43/to_dev/tgmis_rest_api/web/accounts");
+      final response =
+          await http.get("https://bridge-core.nssf.or.tz/accounts");
       print(response.body);
       if (response.statusCode == 200) {
         users = loadUsers(response.body);
@@ -96,8 +97,13 @@ class _SearchAccountState extends State<SearchAccount2> {
                         onPressed: () {
                           // String data = item.first_name;
                           // print(data);
-                          Navigator.of(context).pushReplacementNamed('/account-details',
-                              arguments: {'user': user_data});                        },
+                          if (user_data == null) {
+                            return false;
+                          }
+                          Navigator.of(context).pushReplacementNamed(
+                              '/account-details',
+                              arguments: {'user': user_data});
+                        },
                         icon: Icon(
                           Icons.check_circle,
                           color: Colors.green,
@@ -117,9 +123,15 @@ class _SearchAccountState extends State<SearchAccount2> {
                     },
                     itemSubmitted: (item) {
                       setState(() {
-                        var data={'first_name': item.first_name,'account_number':item.account_no,'middle_name':item.middle_name,'surname':item.surname};
-                         user_data = json.encode(data);
-                        searchTextField.textField.controller.text = item.account_no;
+                        var data = {
+                          'first_name': item.first_name,
+                          'account_number': item.account_no,
+                          'middle_name': item.middle_name,
+                          'surname': item.surname
+                        };
+                        user_data = json.encode(data);
+                        searchTextField.textField.controller.text =
+                            item.account_no;
                       });
                     },
                     itemBuilder: (context, item) {
@@ -130,7 +142,7 @@ class _SearchAccountState extends State<SearchAccount2> {
                           children: [
                             Text(
                               item.account_no,
-                              style:   TextStyle(color: Colors.black),
+                              style: TextStyle(color: Colors.black),
                             ),
                             SizedBox(
                               width: 5.0,
@@ -166,7 +178,7 @@ class _SearchAccountState extends State<SearchAccount2> {
     // Navigator.of(context).pushNamed('/account-details',arguments: {'user':item.first_name});
     String data = item.first_name;
     print(data);
-    Navigator.of(context).pushReplacementNamed('/account-details',
-        arguments: {'user': data});
+    Navigator.of(context)
+        .pushReplacementNamed('/account-details', arguments: {'user': data});
   }
 }
