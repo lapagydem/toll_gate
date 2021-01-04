@@ -59,6 +59,7 @@ class _SearchAccountState extends State<SearchAccount2> {
       color: Colors.white,
       height: 40,
       child: Row(
+
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: <Widget>[
           Text(
@@ -82,11 +83,13 @@ class _SearchAccountState extends State<SearchAccount2> {
       child: Padding(
         padding: EdgeInsets.all(20.0),
         child: Column(
+
           mainAxisAlignment: MainAxisAlignment.start,
           children: <Widget>[
             loading
                 ? CircularProgressIndicator()
                 : searchTextField = AutoCompleteTextField<User>(
+
                     key: key,
                     clearOnSubmit: false,
                     suggestions: users,

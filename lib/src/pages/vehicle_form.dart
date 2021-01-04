@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_session/flutter_session.dart';
 import 'package:http/http.dart' as http;
 import 'package:toll_gate/res/snackbar.dart';
 
@@ -16,20 +17,26 @@ class RegisterVehicle extends StatefulWidget {
 }
 
 Future<VehicleModel> createVehicle(
-  String plate_no,
+  dynamic plate_no,
+  String body_type_id,
   String account_no,
   String rfid_tag_no,
-  String body_type_id,
+  dynamic created_by,
 ) async {
   final String apiUrl = 'https://bridge-core.nssf.or.tz/vehicle/create';
 //  final String apiUrl = 'http://192.168.43.86/Ekanisa/web/vehicles';
-  final response = await http.post(apiUrl, body: {
-    "body_type_id": body_type_id,
-    "account_no": account_no,
-    "rfid_tag_no": rfid_tag_no,
-    "plate_no": plate_no
-  });
-  print(response.statusCode);
+  print(rfid_tag_no);
+  final response = await http.post(apiUrl, headers: {
+    "content-type": "application/json",
+  }, body:
+    jsonEncode({ "body_type_id": body_type_id,
+      "account_no": account_no,
+      "rfid_tag_no": rfid_tag_no,
+      "plate_no": plate_no,
+      "created_by": created_by})
+
+  );
+
   if (response.statusCode == 200) {
     final String responseString = response.body;
     print(responseString);
@@ -41,7 +48,7 @@ Future<VehicleModel> createVehicle(
 
 class RegisterVehicleState extends State<RegisterVehicle> {
   VehicleModel _vehicle;
-  String _mySelection;
+  dynamic _mySelection;
   final String url = "https://bridge-core.nssf.or.tz/body-type/index";
   List data = List();
 
@@ -50,12 +57,11 @@ class RegisterVehicleState extends State<RegisterVehicle> {
         .get(Uri.encodeFull(url), headers: {"Accept": "application/json"});
 
     var resBody = json.decode(res.body);
-    print(resBody);
+    // print(resBody);
 
     setState(() {
       data = resBody;
     });
-
 
     return "Sucess";
   }
@@ -67,10 +73,9 @@ class RegisterVehicleState extends State<RegisterVehicle> {
   }
 
   final _formKey = GlobalKey<FormState>();
-  final TextEditingController tag_numberController = TextEditingController();
-  final TextEditingController body_typeController = TextEditingController();
-  final TextEditingController account_numberController =
-      TextEditingController();
+  // final TextEditingController tag_numberController = TextEditingController();
+  // final TextEditingController body_typeController = TextEditingController();
+  // final TextEditingController account_numberController = TextEditingController();
   final TextEditingController plate_numberController = TextEditingController();
 
   @override
@@ -124,7 +129,6 @@ class RegisterVehicleState extends State<RegisterVehicle> {
                 TextFormField(
                     // controller: account_numberController,
                     initialValue: routes['account'],
-
                     decoration: InputDecoration(
                       hintText: "Account Number",
                       prefixIcon: Icon(Icons.account_balance_wallet),
@@ -144,7 +148,6 @@ class RegisterVehicleState extends State<RegisterVehicle> {
                       border: const OutlineInputBorder()),
                   validator: (value) {
                     if (value.isEmpty) {
-
                       return "Body Type Cant Be Empty";
                     }
                     return null;
@@ -161,9 +164,7 @@ class RegisterVehicleState extends State<RegisterVehicle> {
                     });
                   },
                   value: _mySelection,
-
                 ),
-
                 const SizedBox(height: 20.0),
                 SizedBox(
                   width: double.infinity,
@@ -173,13 +174,23 @@ class RegisterVehicleState extends State<RegisterVehicle> {
                     onPressed: () async {
                       if (_formKey.currentState.validate()) {
                         print(_mySelection);
+                        var user_id = await FlutterSession().get("user_id");
+
+                        DateTime now = new DateTime.now();
+
                         final String account_no = routes['account'];
                         // final String account_no = account_numberController.text;
-                        final String body_type_id = _mySelection;
-                        final String plate_no = plate_numberController.text;
+                        final dynamic plate_no = plate_numberController.text;
+                        final dynamic body_type_id = _mySelection;
                         final String rfid_tag_no = routes['barcode'];
+                        final dynamic created_by = user_id;
                         final VehicleModel vehicle = await createVehicle(
-                            body_type_id, account_no, rfid_tag_no, plate_no);
+                            plate_no,
+                            body_type_id,
+                            account_no,
+                            rfid_tag_no,
+                            created_by,
+                        );
                         setState(() {
                           _vehicle = vehicle;
                         });

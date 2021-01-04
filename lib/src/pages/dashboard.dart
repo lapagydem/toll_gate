@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_session/flutter_session.dart';
 
 class Dashboard extends StatefulWidget {
   final response;
@@ -11,6 +12,9 @@ class Dashboard extends StatefulWidget {
 }
 
 class _DashboardState extends State<Dashboard> {
+  // var user_name;
+  var email;
+
   PageController _myPage = PageController(initialPage: 0);
   final TextStyle whiteText = TextStyle(color: Colors.white);
   final TextStyle BlackText = TextStyle(color: Colors.black);
@@ -40,44 +44,52 @@ class _DashboardState extends State<Dashboard> {
 
   @override
   Widget build(BuildContext context) {
+    final Map arguments = ModalRoute.of(context).settings.arguments as Map;
+    // var data = arguments['resData'];
+    // user_name =
+    //     data['first_name'] + ' ' + data['middle_name'] + ' ' + data['surname'];
+    // email = data['email'];
+
+
+    // print(user_id);
     return Scaffold(
       extendBody: true,
       backgroundColor: Colors.white,
       body: _buildBody(context),
-        bottomNavigationBar: BottomAppBar(
-          shape: CircularNotchedRectangle(),
-          notchMargin: 5,
-          color: Colors.orangeAccent,
-          child: Container(
-            height: 60,
-            child: Row(
-              mainAxisSize: MainAxisSize.max,
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: <Widget>[
-                IconButton(
-                  iconSize: 30.0,
-                  padding: EdgeInsets.only(left: 28.0),
-                  icon: Icon(Icons.dashboard),
-                  onPressed: () {
-                    setState(() {
-                      _myPage.jumpToPage(0);
-                    });
-                  },
-                ),
-                IconButton(
-                  iconSize: 30.0,
-                  padding: EdgeInsets.only(right: 28.0),
-                  icon: Icon(Icons.account_circle),
-                  onPressed: () {
-                    setState(() {
-                      _myPage.jumpToPage(3);
-                    });
-                  },
-                )
-              ],
-            ),
+      bottomNavigationBar: BottomAppBar(
+        shape: CircularNotchedRectangle(),
+        notchMargin: 5,
+        color: Colors.orangeAccent,
+        child: Container(
+          height: 60,
+          child: Row(
+            mainAxisSize: MainAxisSize.max,
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: <Widget>[
+              IconButton(
+                iconSize: 30.0,
+                padding: EdgeInsets.only(left: 28.0),
+                icon: Icon(Icons.dashboard),
+                onPressed: () {
+                  setState(() {
+                    _myPage.jumpToPage(0);
+                  });
+                },
+              ),
+              IconButton(
+                iconSize: 30.0,
+                padding: EdgeInsets.only(right: 28.0),
+                icon: Icon(Icons.account_circle),
+                onPressed: () {
+                  setState(() {
+                    _myPage.jumpToPage(3);
+                  });
+                },
+              )
+            ],
           ),
         ),
+      ),
     );
   }
 
@@ -100,7 +112,7 @@ class _DashboardState extends State<Dashboard> {
                           status ? res : ' ',
                         ),
                         onPressed: () {
-                          Navigator.pushNamed(context, '/');
+                          Navigator.pushNamed(context, '/dashboard');
                         },
                       ),
                     ],
@@ -183,7 +195,8 @@ class _DashboardState extends State<Dashboard> {
                         ],
                       ),
                       onPressed: () {
-                        Navigator.of(context).pushReplacementNamed('/new-account',
+                        Navigator.of(context).pushReplacementNamed(
+                            '/new-account',
                             arguments: {'title': 'Add new Account'});
                       },
                     ),
@@ -298,7 +311,7 @@ class _DashboardState extends State<Dashboard> {
           Padding(
             padding: const EdgeInsets.only(left: 16.0),
             child: Text(
-              "Emmanuel Mdegipala",
+              "Emmanuel mdegipala",
               style: BlackText.copyWith(
                 fontSize: 18.0,
                 fontWeight: FontWeight.w500,
@@ -309,7 +322,7 @@ class _DashboardState extends State<Dashboard> {
           Padding(
             padding: const EdgeInsets.only(left: 16.0),
             child: Text(
-              "System Developer",
+              "email",
               style: BlackText,
             ),
           ),

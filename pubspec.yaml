@@ -33,6 +33,7 @@ dependencies:
   flutter_typeahead:
   autocomplete_textfield: ^1.6.4
   flutter_staggered_animations: "^0.1.2"
+  flutter_session: ^0.1.1
 
 
 

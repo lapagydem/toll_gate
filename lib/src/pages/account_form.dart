@@ -1,5 +1,8 @@
+import 'dart:convert';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_session/flutter_session.dart';
 import 'package:http/http.dart' as http;
 import 'package:toll_gate/res/snackbar.dart';
 
@@ -18,20 +21,27 @@ Future<AccountModel> createAccount(
   String first_name,
   String middle_name,
   String surname,
-  String phone,
+  String password_hash,
   String email,
+  String phone,
+  dynamic created_by,
 ) async {
-  final String apiUrl = 'http://10.10.13.76/smart-pass/web/accounts';
+  final String apiUrl = 'https://bridge-core.nssf.or.tz/account/create';
 //  final String apiUrl = 'http://192.168.43.86/Ekanisa/web/vehicles';
   final response = await http.post(apiUrl, body: {
     "nida": nida,
     "first_name": first_name,
     "middle_name": middle_name,
     "surname": surname,
+    "password_hash": password_hash,
     "email": email,
-    "phone": phone
+    "phone": phone,
+    "created_by": created_by
   });
-  if (response.statusCode == 201) {
+  print(response.body);
+  var result = response.body;
+  var status = json.decode(result);
+  if (status['status'] == 1) {
     final String responseString = response.body;
     return accountModelFromJson(responseString);
   } else {
@@ -49,6 +59,7 @@ class RegisterAccountState extends State<RegisterAccount> {
   final TextEditingController surnameController = TextEditingController();
   final TextEditingController emailController = TextEditingController();
   final TextEditingController phoneController = TextEditingController();
+  final TextEditingController password_hashController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -160,20 +171,30 @@ class RegisterAccountState extends State<RegisterAccount> {
                     color: Colors.green,
                     textColor: Colors.white,
                     onPressed: () async {
+                      var user_id = await FlutterSession().get("user_id");
+                      print(user_id);
                       if (_formKey.currentState.validate()) {
                         final String nida = nidaController.text;
                         final String first_name = first_nameController.text;
                         final String middle_name = middle_nameController.text;
                         final String surname = surnameController.text;
+                        final String password_hash = '12345';
                         final String phone = phoneController.text;
                         final String email = emailController.text;
-                        final AccountModel account = await createAccount(nida,
-                            first_name, middle_name, surname, phone, email);
+                        final dynamic created_by = user_id.toString();
+                        final AccountModel account = await createAccount(
+                            nida,
+                            first_name,
+                            middle_name,
+                            surname,
+                            password_hash,
+                            email,
+                            phone,
+                            created_by);
 
                         setState(() {
                           _account = account;
                         });
-
                         _account == null
                             ? Scaffold.of(context).showSnackBar(BuildSnackbar()
                                 .buildSnackBar(
@@ -183,7 +204,7 @@ class RegisterAccountState extends State<RegisterAccount> {
                                 MaterialPageRoute(
                                     builder: (context) => Dashboard(
                                         response:
-                                            'Account of ${_account.firstName} was Created Successfully')));
+                                            'Account  Created Successfully')));
                         //                    : Text(" Owner ${_account.firstName},${_account.middleName} is created succesfullly "),
 
                       }
