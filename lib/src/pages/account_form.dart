@@ -24,7 +24,7 @@ Future<AccountModel> createAccount(
   String password_hash,
   String email,
   String phone,
-  dynamic created_by,
+  dynamic created_by, amount,
 ) async {
   final String apiUrl = 'https://bridge-core.nssf.or.tz/account/create';
 //  final String apiUrl = 'http://192.168.43.86/Ekanisa/web/vehicles';
@@ -36,7 +36,8 @@ Future<AccountModel> createAccount(
     "password_hash": password_hash,
     "email": email,
     "phone": phone,
-    "created_by": created_by
+    "created_by": created_by,
+    "amount": amount
   });
   print(response.body);
   var result = response.body;
@@ -52,7 +53,7 @@ Future<AccountModel> createAccount(
 class RegisterAccountState extends State<RegisterAccount> {
   AccountModel _account;
   final _formKey = GlobalKey<FormState>();
-
+  bool amountUpdate_value = false;
   final TextEditingController nidaController = TextEditingController();
   final TextEditingController first_nameController = TextEditingController();
   final TextEditingController middle_nameController = TextEditingController();
@@ -60,6 +61,7 @@ class RegisterAccountState extends State<RegisterAccount> {
   final TextEditingController emailController = TextEditingController();
   final TextEditingController phoneController = TextEditingController();
   final TextEditingController password_hashController = TextEditingController();
+  final TextEditingController amountController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -67,13 +69,15 @@ class RegisterAccountState extends State<RegisterAccount> {
         ModalRoute.of(context).settings.arguments as Map<String, String>;
     // TODO: implement build
     return Scaffold(
-      backgroundColor: Colors.yellow[100],
+      backgroundColor: Colors.white,
       body: Container(
-        margin: const EdgeInsets.fromLTRB(16.0, 20.0, 18.0, 16.0),
+        margin: const EdgeInsets.fromLTRB(5.0, 5.0, 5.0, 5.0),
         decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(15.0), color: Colors.white),
+            borderRadius: BorderRadius.circular(5.0),
+            color: Colors.white),
         child: SingleChildScrollView(
           padding: const EdgeInsets.all(16.0),
+          physics: BouncingScrollPhysics(),
           child: Form(
             key: _formKey,
             child: Column(
@@ -93,12 +97,12 @@ class RegisterAccountState extends State<RegisterAccount> {
                       }
                       return null;
                     }),
-                const SizedBox(height: 20.0),
+                const SizedBox(height: 5.0),
                 TextFormField(
                     controller: middle_nameController,
                     decoration: InputDecoration(
                       hintText: "Middle Name",
-                      prefixIcon: Icon(Icons.person),
+                      prefixIcon: Icon(Icons.person_outline),
                       border: const OutlineInputBorder(),
                     ),
                     validator: (value) {
@@ -107,12 +111,12 @@ class RegisterAccountState extends State<RegisterAccount> {
                       }
                       return null;
                     }),
-                const SizedBox(height: 20.0),
+                const SizedBox(height: 5.0),
                 TextFormField(
                     controller: surnameController,
                     decoration: InputDecoration(
                       hintText: "Last Name",
-                      prefixIcon: Icon(Icons.person),
+                      prefixIcon: Icon(Icons.person_outline),
                       border: const OutlineInputBorder(),
                     ),
                     validator: (value) {
@@ -121,9 +125,10 @@ class RegisterAccountState extends State<RegisterAccount> {
                       }
                       return null;
                     }),
-                const SizedBox(height: 20.0),
+                const SizedBox(height: 5.0),
                 TextFormField(
                     controller: phoneController,
+                    keyboardType: TextInputType.number,
                     decoration: InputDecoration(
                       hintText: "Phone Number",
                       prefixIcon: Icon(Icons.account_balance_wallet),
@@ -135,9 +140,10 @@ class RegisterAccountState extends State<RegisterAccount> {
                       }
                       return null;
                     }),
-                const SizedBox(height: 20.0),
+                const SizedBox(height: 5.0),
                 TextFormField(
                     controller: emailController,
+                    keyboardType: TextInputType.emailAddress,
                     decoration: InputDecoration(
                       hintText: "Email",
                       prefixIcon: Icon(Icons.mail),
@@ -149,27 +155,53 @@ class RegisterAccountState extends State<RegisterAccount> {
                       }
                       return null;
                     }),
-                const SizedBox(height: 20.0),
+                const SizedBox(height: 5.0),
                 TextFormField(
+                    keyboardType: TextInputType.number,
                     controller: nidaController,
                     decoration: InputDecoration(
                       hintText: "NIDA number",
                       prefixIcon: Icon(Icons.nfc),
                       border: const OutlineInputBorder(),
                     ),
-                    validator: (value) {
-                      if (value.isEmpty) {
-                        return 'please enter your NIDA number';
-                      }
-                      return null;
-                    }),
-                const SizedBox(height: 20.0),
+                    // validator: (value) {
+                    //   if (value.isEmpty) {
+                    //     return 'please enter your NIDA number';
+                    //   }
+                    //   return null;
+                    // }
+                    ),
+                const SizedBox(height: 5.0),
+                Visibility(
+                  visible: amountUpdate_value,
+                  child: TextFormField(
+                    controller: amountController,
+                    decoration: InputDecoration(
+                      hintText: "Amount",
+                      prefixIcon: Icon(Icons.money),
+                      border: const OutlineInputBorder(),
+                    ),
+                  ),
+                ),
+                CheckboxListTile(
+                  title: Text("TopUp Account ?"),
+                  controlAffinity: ListTileControlAffinity.leading,
+                  value: amountUpdate_value,
+                  onChanged: (bool amountUpdateValue) {
+                    setState(() {
+                      amountUpdate_value = amountUpdateValue;
+                    });
+                    if (amountUpdate_value == true) {
+                      print('test');
+                    }
+                  },
+                ),
                 const SizedBox(height: 10.0),
                 SizedBox(
                   width: double.infinity,
                   child: RaisedButton(
                     color: Colors.green,
-                    textColor: Colors.white,
+                    textColor: Colors.black,
                     onPressed: () async {
                       var user_id = await FlutterSession().get("user_id");
                       print(user_id);
@@ -182,6 +214,7 @@ class RegisterAccountState extends State<RegisterAccount> {
                         final String phone = phoneController.text;
                         final String email = emailController.text;
                         final dynamic created_by = user_id.toString();
+                        final dynamic amount = amountController.text;
                         final AccountModel account = await createAccount(
                             nida,
                             first_name,
@@ -190,7 +223,8 @@ class RegisterAccountState extends State<RegisterAccount> {
                             password_hash,
                             email,
                             phone,
-                            created_by);
+                            created_by,
+                            amount);
 
                         setState(() {
                           _account = account;

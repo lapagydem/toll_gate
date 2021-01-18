@@ -22,7 +22,7 @@ class _NewAccountState extends State<NewAccount> {
     return Scaffold(
         appBar: AppBar(
           backgroundColor: Colors.orangeAccent,
-          title: Text(routes['title']),
+          title: Text('Account Registration',style: TextStyle(fontStyle: FontStyle.normal, fontSize: 18)),
           centerTitle: true,
         ),
       body: RegisterAccount(),
@@ -42,9 +42,10 @@ class _NewAccountState extends State<NewAccount> {
                 icon: Icon(Icons.dashboard),
                 onPressed: () {
                   Navigator.of(context)
-                      .pushReplacementNamed('/', arguments: {});
+                      .pushReplacementNamed('/dashboard', arguments: {});
                 },
               ),
+
               IconButton(
                 iconSize: 30.0,
                 padding: EdgeInsets.only(right: 28.0),

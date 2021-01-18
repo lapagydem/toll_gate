@@ -195,9 +195,8 @@ class _DashboardState extends State<Dashboard> {
                         ],
                       ),
                       onPressed: () {
-                        Navigator.of(context).pushReplacementNamed(
-                            '/new-account',
-                            arguments: {'title': 'Add new Account'});
+                        Navigator.of(context).pushNamed('/new-account');
+
                       },
                     ),
                   ),
