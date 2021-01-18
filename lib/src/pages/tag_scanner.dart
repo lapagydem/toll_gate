@@ -76,7 +76,7 @@ class _TagScannerState extends State<TagScanner> {
                   colorBrightness: Brightness.light,
                   onPressed: () {
                     Navigator.of(context).pushReplacementNamed('/new-vehicle',arguments:{
-                      'title':'Add new Vehicle',
+                      'title':'ADD VEHICLE TO ACCOUNT',
                       'barcode': barcode,
                       'account': routes['account']
                     });

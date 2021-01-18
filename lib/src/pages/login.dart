@@ -22,12 +22,13 @@ class LoginScreen extends StatelessWidget {
         .post(apiUrl, body: {"username": data.name, "password": data.password});
     print(response.statusCode);
     var decoded = json.decode(response.body);
-    resData =  decoded['data'];
-    await FlutterSession().set('user_id', resData['id']);
 
 
     print(decoded['message']);
     if (decoded['message'] == 'Authenticated') {
+      resData =  decoded['data'];
+      await FlutterSession().set('user_id', resData['id']);
+
       // final String responseString = response.body;
       print(resData);
       // print(response.body);
