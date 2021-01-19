@@ -3,6 +3,11 @@ import 'package:barcode_scan/barcode_scan.dart';
 
 
 class TagScanner extends StatefulWidget {
+
+  final response;
+
+
+  TagScanner({this.response});
   @override
   _TagScannerState createState() => _TagScannerState();
 }
@@ -11,6 +16,9 @@ class _TagScannerState extends State<TagScanner> {
   String barcode = "";
   var account;
   final _formKey = GlobalKey<FormState>();
+  bool status = false;
+
+  static String res;
 
   Future scanCode() async {
     try {
@@ -28,6 +36,25 @@ class _TagScannerState extends State<TagScanner> {
   }
 
   PageController _myPage = PageController(initialPage: 0);
+
+  void initState() {
+    // TODO: implement initState
+    res = widget.response;
+    super.initState();
+    checkResponse();
+  }
+
+  checkResponse() {
+    if (res == ' ') {
+      setState(() {
+        status = false;
+      });
+    } else {
+      setState(() {
+        status = true;
+      });
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -91,10 +118,12 @@ class _TagScannerState extends State<TagScanner> {
       extendBody: true,
 
       body: Container(
+
         decoration: BoxDecoration(
             image: DecorationImage(
                 image: AssetImage('assets/image/nss.png'), fit: BoxFit.cover)),
         child: Center(
+
           child: ButtonTheme(
             minWidth: 200.0,
             height: 50.0,
@@ -113,6 +142,7 @@ class _TagScannerState extends State<TagScanner> {
               elevation: 15.0,
             ),
           ),
+
         ),
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
@@ -138,9 +168,7 @@ class _TagScannerState extends State<TagScanner> {
                 padding: EdgeInsets.only(left: 28.0),
                 icon: Icon(Icons.dashboard),
                 onPressed: () {
-                  Navigator.of(context).pushReplacementNamed('/',arguments:{
-
-                  });
+                  Navigator.of(context).pop();
                 },
               ),
               IconButton(

@@ -54,8 +54,7 @@ class RegisterVehicleState extends State<RegisterVehicle> {
   List data = List();
 
   Future<String> getBodyTypeList() async {
-    var res = await http
-        .get(Uri.encodeFull(url), headers: {"Accept": "application/json"});
+    var res = await http.get(Uri.encodeFull(url), headers: {"Accept": "application/json"});
 
     var resBody = json.decode(res.body);
     // print(resBody);
@@ -64,7 +63,7 @@ class RegisterVehicleState extends State<RegisterVehicle> {
       data = resBody;
     });
 
-    return "Sucess";
+    return "Success";
   }
 
   @override

@@ -1,33 +1,80 @@
+import 'dart:convert';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_session/flutter_session.dart';
+import 'package:http/http.dart' as http;
+import 'package:toll_gate/models/account.dart';
 
 class Dashboard extends StatefulWidget {
   final response;
-
   Dashboard({this.response});
-
   @override
   _DashboardState createState() => _DashboardState();
 }
 
 class _DashboardState extends State<Dashboard> {
-  // var user_name;
-  var email;
 
   PageController _myPage = PageController(initialPage: 0);
   final TextStyle whiteText = TextStyle(color: Colors.white);
   final TextStyle BlackText = TextStyle(color: Colors.black);
   bool status = false;
   static String res;
+  static List<Account> users = new List<Account>();
+  bool loading = true;
 
   @override
+  final String url = "https://bridge-core.nssf.or.tz/auth-users/";
+  var first_name;
+  var surname;
+  String user_data = '';
+  String email = '';
+
+  //get Users list with typahead
+  void getUsersData() async {
+    try {
+      var user_id = await FlutterSession().get("user_id");
+      first_name = await FlutterSession().get("first_name");
+      surname = await FlutterSession().get("surname");
+      email = await FlutterSession().get("email");
+      setState(() {
+        user_data = first_name + ' ' + surname;
+        email = email;
+      });
+      print(surname);
+      print(first_name);
+
+      final response = await http.get(Uri.encodeFull(url + user_id),
+          headers: {"Accept": "application/json"});
+
+      print(response.body);
+      if (response.statusCode == 200) {
+        users = loadUsers(response.body);
+        print('Users:${users.length}');
+        setState(() {
+          loading = false;
+        });
+      } else {
+        print("Error getting Users");
+      }
+    } catch (e) {
+      print('Errors getting Users');
+    }
+  }
+
   void initState() {
     // TODO: implement initState
     res = widget.response;
+    // saveData();
     super.initState();
-    print(res);
     checkResponse();
+    getUsersData();
+  }
+
+  static List<Account> loadUsers(String jsonString) {
+    final parsed = json.decode(jsonString).cast<Map<String, dynamic>>();
+
+    return parsed.map<Account>((json) => Account.fromJson(json)).toList();
   }
 
   checkResponse() {
@@ -46,12 +93,10 @@ class _DashboardState extends State<Dashboard> {
   Widget build(BuildContext context) {
     final Map arguments = ModalRoute.of(context).settings.arguments as Map;
     // var data = arguments['resData'];
+    // print(data);
     // user_name =
     //     data['first_name'] + ' ' + data['middle_name'] + ' ' + data['surname'];
-    // email = data['email'];
 
-
-    // print(user_id);
     return Scaffold(
       extendBody: true,
       backgroundColor: Colors.white,
@@ -94,9 +139,9 @@ class _DashboardState extends State<Dashboard> {
   }
 
   Widget _buildBody(BuildContext context) {
-    BoxDecoration(
-        image: DecorationImage(
-            image: AssetImage('assets/image/nss.png'), fit: BoxFit.cover));
+    // BoxDecoration(
+    //     image: DecorationImage(
+    //         image: AssetImage('assets/image/nss.png'), fit: BoxFit.cover));
     return SingleChildScrollView(
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -196,7 +241,6 @@ class _DashboardState extends State<Dashboard> {
                       ),
                       onPressed: () {
                         Navigator.of(context).pushNamed('/new-account');
-
                       },
                     ),
                   ),
@@ -302,15 +346,15 @@ class _DashboardState extends State<Dashboard> {
               style: whiteText.copyWith(
                   fontWeight: FontWeight.bold, fontSize: 20.0),
             ),
-            trailing: CircleAvatar(
-              radius: 25.0,
-            ),
+            // trailing: CircleAvatar(
+            //   radius: 25.0,
+            // ),
           ),
           const SizedBox(height: 10.0),
           Padding(
             padding: const EdgeInsets.only(left: 16.0),
             child: Text(
-              "Emmanuel mdegipala",
+              user_data,
               style: BlackText.copyWith(
                 fontSize: 18.0,
                 fontWeight: FontWeight.w500,
@@ -321,7 +365,7 @@ class _DashboardState extends State<Dashboard> {
           Padding(
             padding: const EdgeInsets.only(left: 16.0),
             child: Text(
-              "email",
+              email,
               style: BlackText,
             ),
           ),
